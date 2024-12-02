@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7601/7601946.png" />
+    <title>Search Results</title>
+
+    <style>
+        .flight-box {
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+            box-sizing: border-box;
+            height: 300px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .flight-box:hover {
+                transform: scale(1.05);
+        }
+
+        .price-section {
+            display: flex;
+            flex-direction: column; /* Расположение элементов в столбец */
+            align-items: flex-start; /* Выравнивание по левому краю */
+            max-width: 160px;
+            flex-grow: 0;
+        }
+
+        .ticket-price {
+                margin: 0;
+        }
+
+        .select-button {
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: SlateBlue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            flex-grow: 1;
+        }
+
+        .departure-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-right: auto;
+        }
+
+        .departure-info img {
+            margin-right: 10px;
+        }
+
+        .separator {
+            width: 2px; /*  для вертикальной линии */
+            background-color: #333;
+            height: 100%;
+            margin: 0 10px; /*  смещение справа от кнопки */
+        }
+
+        .select-button .separator {
+            position: absolute; /* Абсолютное позиционирование */
+            top: 0; /* Выравнивание по верхнему краю */
+            bottom: 0; /* Занимает всю высоту блока */
+            right: -6px; /* Смещение вправо, чтобы была видна линия */
+        }
+
+        .airline-logo {
+            width: 50px;
+            height: 50px;
+        }
+
+        .plane-icon1 {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            margin-top: -55px;
+            position: absolute;
+        }
+
+        .plane-icon2 {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            margin-top: -55px;
+            position: absolute;
+        }
+
+        .departure-info-line {
+           margin-right: auto;
+        }
+
+        .airport-departure-info-line {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            margin-left: 100px;
+            position: relative;
+        }
+
+        .airport-departure-info-line::after {
+        content: '';
+        display: block;
+        height: 2px;
+        background-color: #333;
+        margin-left: 10px;
+        width: 200px;
+        }
+
+        .arrival-info-line {
+            margin-left: auto;
+        }
+
+        .airport-arrival-info-line {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            margin-right: 94px;
+            position: relative;
+            top: -131px;
+        }
+
+        .flight-duration {
+            margin-bottom: 5px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        h1, p, button {
+            color: maroon;
+        }
+
+        .column {
+            flex-basis: 48%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        button,
+        input[type="submit"] {
+            cursor: pointer;
+            background-color: SlateBlue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover,
+        input[type="submit"]:hover {
+            background-color: DarkSlateBlue;
+        }
+    </style>
+
+    <script>
+
+
+        function selectTicket(flightId) {
+
+            // Получение значения пассажирского класса из sessionStorage
+            const selectedPassengerClass = sessionStorage.getItem('selectedPassengerClass');
+
+
+            // Получение значений пассажиров из sessionStorage
+            const selectedAdultCount = sessionStorage.getItem('selectedAdultCount');
+            const selectedChildCount = sessionStorage.getItem('selectedChildCount');
+            const selectedInfantCount = sessionStorage.getItem('selectedInfantCount');
+
+            // Преобразование значений в числа (если это необходимо)
+            const adultCount = parseInt(selectedAdultCount, 10) || 0;
+            const childCount = parseInt(selectedChildCount, 10) || 0;
+            const infantCount = parseInt(selectedInfantCount, 10) || 0;
+
+            // Формирование строки параметров URL
+            const queryParams = `?flightId=${flightId}&adult=${adultCount}&child=${childCount}&infant=${infantCount}&passengerClass=${encodeURIComponent(selectedPassengerClass)}`;
+
+            // Переход на следующую страницу с параметрами URL
+            window.location.href = `/buy_ticket${queryParams}`;
+        }
+
+
+    </script>
+</head>
+<body>
+<div style="background-color: SlateBlue; height: 37px; padding: 10px; text-align: right;">
+    <div style="display: flex; align-items: center;">
+        <img src="https://cdn-icons-png.flaticon.com/512/6557/6557822.png" alt="Логотип" style="width: 50px; height: 50px; margin-right: 10px;">
+        <p style="margin: 0; font-size: 24px; color: white; letter-spacing: 2px;">SkyGuest</p>
+
+    </div>
+</div>
+
+<div style="background-image: url('https://images.unsplash.com/photo-1514519334989-3d5c8b1a9f91?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center; height: calc(200vh - 50px); display: flex; justify-content: space-around; align-items: flex-start;">
+
+    {% set airline_logos = {
+    'Lufthansa': 'https://live.staticflickr.com/5520/10839086113_77ea3a5336_c.jpg',
+    'Emirates': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/566px-Emirates_logo.svg.png?20190128215923',
+    'Delta Air Lines': 'https://logos-world.net/wp-content/uploads/2021/08/Delta-Logo.png',
+    'Singapore Airlines':'https://i.pinimg.com/736x/cb/14/a4/cb14a4b97cc5ca03bbfa5a8b8e1bc5c0.jpg',
+    'Qatar Airways':'https://wallpaperaccess.com/full/8128265.png',
+    'Air France-KLM':'https://www.nicepng.com/png/detail/398-3987118_air-france-klm-logo-svg-klm-royal-dutch.png',
+    'Cathay Pacific Airways':'https://www.nicepng.com/png/detail/398-3987118_air-france-klm-logo-svg-klm-royal-dutch.pnghttps://logolook.net/wp-content/uploads/2021/01/Cathay-Pacific-Logo-1994.png',
+    'United Airlines':'https://logohistory.net/wp-content/uploads/2023/06/United-Airlines-Emblem.png',
+    'Ryanair':'https://w7.pngwing.com/pngs/502/989/png-transparent-flight-ryanair-bus-quick-click-fare-harp-blue-logo-transport-thumbnail.png',
+    'China Southern Airlines':'https://1000logos.net/wp-content/uploads/2020/04/China-Southern-Logo-1988.jpg',
+
+
+} %}
+
+    <div class="column">
+        {% if outbound_flights %}
+            {% for flight in outbound_flights %}
+                <div class="flight-box">
+                    <div class="price-section">
+                        <p class="ticket-price" style="font-weight: bold;">BYN: {{ flight['flight_info']['calculated_price'] }}</p>
+                        <button class="select-button" onclick="selectTicket('{{ flight['flight_info']['flight_id'] }}')">Выбрать билет</button>
+                        <p>Наличие багажа: {% if flight['flight_info']['has_baggage'] == 1 %}Да{% else %}Нет{% endif %}</p>
+                    </div>
+                     <div class="separator"></div>
+                    <div class="info-section">
+                        <div class="departure-info">
+                            <img class="airline-logo" src="{{ airline_logos.get(flight['flight_info']['airline_name'])}}" alt="Логотип авиакомпании">
+                            <p>{{ flight['flight_info']['airline_name'] }}</p>
+                        </div>
+                        <p class="departure-info-line" style="font-weight: bold;margin-top: 40px;">{{ flight['flight_info']['departure_time'] }}<span style="margin-right: 110px;"></span>В пути: {{ flight['duration'] }}<span style="margin-right: 110px;"></span>{{ flight['flight_info']['arrival_time'] }}</p>
+                        <p class="airport-departure-info-line">
+                            <img class="plane-icon1" src="https://cdn-icons-png.flaticon.com/256/17/17981.png" alt="Иконка самолета">
+                            {{ flight['flight_info']['departure_airport_code'] }}
+                        </p>
+                        <p class="departure-info-line">{{ flight['flight_info']['departure_city'] }}<span style="margin-right: 340px;"></span>{{ flight['flight_info']['arrival_city'] }}</p>
+                        <p class="departure-info-line" style="margin-top: -5px;">{{ flight['flight_info']['departure_date'] }}<span style="margin-right: 300px;"></span>{{ flight['flight_info']['arrival_date'] }}</p>
+
+                        <p class="airport-arrival-info-line">
+                                <img class="plane-icon2" src="https://cdn-icons-png.flaticon.com/512/17/17206.png" alt="Иконка самолета">
+                            {{ flight['flight_info']['arrival_airport_code'] }}
+                        </p>
+
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+                <div class="flight-box">
+                    <h1>Информация о рейсах отсутствует!</h1>
+                </div>
+        {% endif %}
+    </div>
+
+        <div class="column">
+            {% if return_flights %}
+                {% for flight in return_flights %}
+                    <div class="flight-box">
+                        <div class="price-section">
+                            <p class="ticket-price" style="font-weight: bold;">BYN: {{ flight['flight_info']['calculated_price'] }}</p>
+                            <button class="select-button" onclick="selectTicket('{{ flight['flight_info']['flight_id'] }}')">Выбрать билет</button>
+                            <p>Наличие багажа: {% if flight['flight_info']['has_baggage'] == 1 %}Да{% else %}Нет{% endif %}</p>
+                        </div>
+                         <div class="separator"></div>
+                        <div class="info-section">
+                            <div class="departure-info">
+                                <img class="airline-logo" src="{{ airline_logos.get(flight['flight_info']['airline_name'])}}" alt="Логотип авиакомпании">
+                                <p>{{ flight['flight_info']['airline_name'] }}</p>
+                            </div>
+                            <p class="departure-info-line" style="font-weight: bold;margin-top: 40px;">{{ flight['flight_info']['departure_time'] }}<span style="margin-right: 100px;"></span>В пути: {{ flight['duration'] }}<span style="margin-right: 115px;"></span>{{ flight['flight_info']['arrival_time'] }}</p>
+                            <p class="airport-departure-info-line">
+                                <img class="plane-icon1" src="https://cdn-icons-png.flaticon.com/256/17/17981.png" alt="Иконка самолета">
+                                {{ flight['flight_info']['departure_airport_code'] }}
+                            </p>
+                            <p class="departure-info-line">{{ flight['flight_info']['departure_city'] }}<span style="margin-right: 340px;"></span>{{ flight['flight_info']['arrival_city'] }}</p>
+                            <p class="departure-info-line" style="margin-top: -5px;">{{ flight['flight_info']['departure_date'] }}<span style="margin-right: 300px;"></span>{{ flight['flight_info']['arrival_date'] }}</p>
+
+                            <p class="airport-arrival-info-line">
+                                    <img class="plane-icon2" src="https://cdn-icons-png.flaticon.com/512/17/17206.png" alt="Иконка самолета">
+                                {{ flight['flight_info']['arrival_airport_code'] }}
+                            </p>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% if return_date %}
+                    <div class="flight-box">
+                        <h1>Информация о рейсах отсутствует!</h1>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+   </div>
+
+
+</body>
+</html>

@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin_profile</title>
+        <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7601/7601946.png" />
+
+<style>
+        h1,
+        label {
+            color: Maroon;
+        }
+
+        button {
+            background-color: SlateBlue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: DarkSlateBlue;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            transition: transform 0.3s ease-in-out;
+
+            background-color: rgba(255, 255, 255, 0.7);
+             border-radius: 10px; /* добавлено свойство для закругленных краев */
+            padding: 20px; /* добавлено свойство для отступов */
+        }
+
+         .container:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-box {
+            transition: transform 0.3s ease-in-out;
+
+            background-color: rgba(182, 160, 255, 0.7);
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+             margin-bottom: 10px;
+            border-radius: 10px; /* добавлено свойство для закругленных краев */
+            padding: 50px; /* добавлено свойство для отступов */
+
+        }
+
+
+        .feature-box:hover {
+            transform: scale(1.05);
+        }
+
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button,
+        input[type="submit"] {
+            cursor: pointer;
+            background-color: SlateBlue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover,
+        input[type="submit"]:hover {
+            background-color: DarkSlateBlue;
+        }
+
+        table {
+            width: 100%;
+            max-width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+
+            overflow: hidden; /* Скрытие текста, выходящего за границы ячейки */
+            text-overflow: ellipsis; /* Отображение многоточия для обрезанного текста */
+        }
+
+        th {
+            background-color: SlateBlue;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+    .action-buttons {
+            margin-top: 20px; /* Отступ между таблицей и кнопками */
+            display: flex;
+            gap: 10px; /* Отступ между кнопками */
+        }
+
+        .action-buttons button {
+            margin: 0; /* Сброс встроенных отступов кнопок */
+        }
+
+    </style>
+
+    <style>
+        /* Добавляем стили для анимации выезда полей */
+        .edit-fields,
+        .delete-fields,
+        .add-fields {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+            display: none;
+        }
+
+        .edit-fields.active,
+        .delete-fields.active,
+        .add-fields.active {
+            max-height: 200px; /* Высота полей */
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .feature-box,
+        .container {
+             margin-top: 20px; /* Фиксированный отступ сверху */
+        }
+    </style>
+
+ <script>
+        function editAirline(airlineId) {
+            // Логика для отображения формы редактирования и заполнения полей данными авиакомпании
+            document.getElementById('editForm').style.display = 'block';
+            document.getElementById('addForm').style.display = 'none';
+
+            // Получаем данные выбранной авиакомпании из таблицы
+            var selectedAirline = document.querySelector('input[name="selected_airline"]:checked');
+            var airlineName = selectedAirline.parentNode.parentNode.cells[0].textContent;
+            var airlineCode = selectedAirline.parentNode.parentNode.cells[1].textContent;
+            var contactInfo = selectedAirline.parentNode.parentNode.cells[2].textContent;
+
+            // Заполняем поля формы редактирования
+            document.getElementById('edit_name').value = airlineName;
+            document.getElementById('edit_code').value = airlineCode;
+            document.getElementById('edit_contact').value = contactInfo;
+        }
+
+        function saveChanges() {
+            // Получаем значения полей из формы редактирования
+            var airlineId = document.querySelector('input[name="selected_airline"]:checked').value;
+            var name = document.getElementById('edit_name').value;
+            var code = document.getElementById('edit_code').value;
+            var contact = document.getElementById('edit_contact').value;
+
+            // Отправляем данные на сервер
+            fetch(`/edit_airline/${airlineId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    edit_name: name,
+                    edit_code: code,
+                    edit_contact: contact
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Изменения успешно сохранены.');
+                    window.location.reload()
+                } else {
+                    alert('Произошла ошибка при сохранении изменений.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке запроса.');
+            });
+
+            // Скрываем форму редактирования после сохранения изменений
+            document.getElementById('editForm').style.display = 'none';
+        }
+
+       function saveNew() {
+        // Получаем значения полей из формы
+        var name = document.getElementById('add_name').value;
+        var code = document.getElementById('add_code').value;
+        var contact = document.getElementById('add_contact').value;
+
+        // Отправляем данные на сервер
+        fetch('/add_airline', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                add_name: name,
+                add_code: code,
+                add_contact: contact
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Авиакомпания успешно добавлена.');
+                window.location.reload()
+            } else {
+                alert('Произошла ошибка при добавлении авиакомпании.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке запроса.');
+        });
+    }
+
+    function showAddForm() {
+        // Логика для отображения формы добавления
+        document.getElementById('addForm').style.display = 'block';
+        document.getElementById('editForm').style.display = 'none';
+    }
+
+        function editSelected() {
+            // Логика для редактирования выбранной авиакомпании
+            var selectedAirlineId = document.querySelector('input[name="selected_airline"]:checked');
+            if (selectedAirlineId) {
+                var airlineId = selectedAirlineId.value;
+                editAirline(airlineId);
+            } else {
+                alert('Выберите авиакомпанию для редактирования.');
+            }
+        }
+
+        function getSelectedAirlineId() {
+            var selectedAirline = document.querySelector('input[name="selected_airline"]:checked');
+            if (selectedAirline) {
+                return selectedAirline.value;
+            }
+            return null; // или можно вернуть другое значение, которое указывает на отсутствие выбранной авиакомпании
+        }
+    function deleteAirline(airlineId) {
+    var confirmDelete = confirm('Вы уверены, что хотите удалить выбранную авиакомпанию?');
+
+    if (confirmDelete) {
+        // Пример: отправка запроса на сервер для удаления авиакомпании с использованием fetch
+        fetch(`/delete_airline/${airlineId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data.includes('success')) {
+                alert('Авиакомпания успешно удалена.');
+                window.location.reload();
+            } else {
+                alert('Произошла ошибка при удалении авиакомпании.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке запроса.');
+        });
+    }
+}
+</script>
+
+    <script>
+    function showFormAeroport(formId) {
+        hideAllFormsAeroport();
+        document.getElementById(formId).style.display = 'block';
+    }
+
+    function hideAllFormsAeroport() {
+        document.getElementById('editFormAeroport').style.display = 'none';
+        document.getElementById('addFormAeroport').style.display = 'none';
+    }
+
+    function saveAirportChanges() {
+    var selectedAirportId = getSelectedAirportId();
+
+    if (selectedAirportId) {
+        var newName = document.getElementById('edit_apname').value;
+        var newCode = document.getElementById('edit_apcode').value;
+        var newCity = document.getElementById('edit_apcity').value;
+        var newAddress = document.getElementById('edit_apaddress').value;
+        var newContact = document.getElementById('edit_apcontact').value;
+
+        var data = {
+            edit_apname: newName,
+            edit_apcode: newCode,
+            edit_apcity: newCity,
+            edit_apaddress: newAddress,
+            edit_apcontact: newContact
+        };
+
+        // Отправка данных на сервер
+        fetch(`/update_airport/${selectedAirportId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Проверяем, является ли ответ JSON
+            var contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                throw new TypeError("Response was not JSON");
+            }
+        })
+        .then(result => {
+            if (result.success) {
+                alert('Изменения для аэропорта успешно сохранены!');
+                window.location.reload();
+            } else {
+                alert('Произошла ошибка при сохранении изменений для аэропорта.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке запроса:', error);
+            alert('Произошла ошибка при сохранении изменений для аэропорта.');
+        });
+    } else {
+        alert('Выберите аэропорт для сохранения изменений.');
+    }
+}
+
+    function saveNewAirport() {
+        var newAirportData = {
+            add_apname: document.getElementById('add_apname').value,
+            add_apcode: document.getElementById('add_apcode').value,
+            add_apcity: document.getElementById('add_apcity').value,
+            add_apaddress: document.getElementById('add_apaddress').value,
+            add_apcontact: document.getElementById('add_apcontact').value
+        };
+
+        // Отправка AJAX-запроса на сервер
+        fetch('/add_airport', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newAirportData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Новый аэропорт успешно добавлен!');
+                window.location.reload();
+            } else {
+                alert('Произошла ошибка при добавлении аэропорта: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке запроса:', error);
+            alert('Произошла ошибка при добавлении аэропорта.');
+        });
+    }
+
+    function editSelectedAirport() {
+    var selectedAirportId = getSelectedAirportId();
+    if (selectedAirportId) {
+        showFormAeroport('editFormAeroport');
+
+        // Получите данные выбранного аэропорта и заполните поля формы редактирования
+        var selectedAirport = document.querySelector('input[name="selected_airport"]:checked');
+        var airportName = selectedAirport.parentNode.parentNode.cells[0].textContent;
+        var airportCode = selectedAirport.parentNode.parentNode.cells[1].textContent;
+        var airportCity = selectedAirport.parentNode.parentNode.cells[2].textContent;
+        var airportAddress = selectedAirport.parentNode.parentNode.cells[3].textContent;
+        var airportContact = selectedAirport.parentNode.parentNode.cells[4].textContent;
+
+        // Заполните поля формы данными выбранного аэропорта для редактирования
+        document.getElementById('edit_apname').value = airportName;
+        document.getElementById('edit_apcode').value = airportCode;
+        document.getElementById('edit_apcity').value = airportCity;
+        document.getElementById('edit_apaddress').value = airportAddress;
+        document.getElementById('edit_apcontact').value = airportContact;
+    } else {
+        alert('Выберите аэропорт для редактирования.');
+    }
+}
+
+    function deleteAirport(selectedAirportId) {
+        if (selectedAirportId) {
+            var confirmDelete = confirm('Вы уверены, что хотите удалить выбранный аэропорт?');
+
+            if (confirmDelete) {
+                fetch(`/delete_airport/${selectedAirportId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Аэропорт успешно удален!');
+                        window.location.reload();
+                    } else {
+                        alert('Ошибка при удалении аэропорта: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при отправке запроса:', error);
+                    alert('Ошибка при удалении аэропорта.');
+                });
+            }
+        } else {
+            alert('Выберите аэропорт для удаления.');
+        }
+    }
+
+    function showAddFormAirport() {
+        hideAllFormsAeroport();
+        showFormAeroport('addFormAeroport');
+    }
+
+    function getSelectedAirportId() {
+        var selectedAirportRadios = document.querySelectorAll('input[name="selected_airport"]:checked');
+        if (selectedAirportRadios.length > 0) {
+            return selectedAirportRadios[0].value;
+        }
+        return null;
+    }
+</script>
+
+   <script>
+    function showFormPlane(formId) {
+        hideAllFormsPlane();
+        document.getElementById(formId).style.display = 'block';
+    }
+
+    function hideAllFormsPlane() {
+        document.getElementById('editFormPlane').style.display = 'none';
+        document.getElementById('addFormPlane').style.display = 'none';
+    }
+
+
+
+    function savePlaneChanges() {
+        var selectedPlaneId = getSelectedPlaneId();
+
+        if (selectedPlaneId) {
+            var newName = document.getElementById('edit_pname').value;
+            var newModel = document.getElementById('edit_model').value;
+            var newAirline = document.getElementById('edit_airline').value;
+            var newEconomySeats = document.getElementById('edit_economy_seats').value;
+            var newBusinessSeats = document.getElementById('edit_business_seats').value;
+            var newFirstClassSeats = document.getElementById('edit_first_class_seats').value;
+            var newComfortClassSeats = document.getElementById('edit_comfort_class_seats').value;
+            var newEconomyPrice = document.getElementById('edit_economy_price').value;
+            var newBusinessPrice = document.getElementById('edit_business_price').value;
+            var newFirstPrice = document.getElementById('edit_first_price').value;
+            var newComfortPrice = document.getElementById('edit_comfort_price').value;
+            var newHasBaggage = document.getElementById('edit_has_baggage').value;
+
+            var data = {
+                edit_pname: newName,
+                edit_model: newModel,
+                edit_airline: newAirline,
+                edit_economy_seats: newEconomySeats,
+                edit_business_seats: newBusinessSeats,
+                edit_first_class_seats: newFirstClassSeats,
+                edit_comfort_class_seats: newComfortClassSeats,
+                edit_economy_price: newEconomyPrice,
+                edit_business_price: newBusinessPrice,
+                edit_first_price: newFirstPrice,
+                edit_comfort_price: newComfortPrice,
+                edit_has_baggage: newHasBaggage
+            };
+
+            // Отправка данных на сервер
+            fetch(`/update_plane/${selectedPlaneId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Проверяем, является ли ответ JSON
+                var contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json();
+                } else {
+                    throw new TypeError("Response was not JSON");
+                }
+            })
+            .then(result => {
+                if (result.success) {
+                    alert('Изменения для самолета успешно сохранены!');
+                    window.location.reload();
+                } else {
+                    alert('Произошла ошибка при сохранении изменений для самолета.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при отправке запроса:', error);
+                alert('Произошла ошибка при сохранении изменений для самолета.');
+            });
+        } else {
+            alert('Выберите самолет для сохранения изменений.');
+        }
+    }
+
+    function saveNewPlane() {
+        var newPlaneData = {
+            add_pname: document.getElementById('add_pname').value,
+            add_model: document.getElementById('add_model').value,
+            add_airline: document.getElementById('add_airline').value,
+            add_economy_seats: document.getElementById('add_economy_seats').value,
+            add_business_seats: document.getElementById('add_business_seats').value,
+            add_first_class_seats: document.getElementById('add_first_class_seats').value,
+            add_comfort_class_seats: document.getElementById('add_comfort_class_seats').value,
+            add_economy_price: document.getElementById('add_economy_price').value,
+            add_business_price: document.getElementById('add_business_price').value,
+            add_first_price: document.getElementById('add_first_price').value,
+            add_comfort_price: document.getElementById('add_comfort_price').value,
+            add_has_baggage: document.getElementById('add_has_baggage').value
+        };
+
+        // Отправка AJAX-запроса на сервер
+        fetch('/add_plane', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newPlaneData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Новый самолет успешно добавлен!');
+                window.location.reload();
+            } else {
+                alert('Произошла ошибка при добавлении самолета: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке запроса:', error);
+            alert('Произошла ошибка при добавлении самолета.');
+        });
+    }
+
+   function editSelectedPlane() {
+    var selectedPlaneId = getSelectedPlaneId();
+    if (selectedPlaneId) {
+        showFormPlane('editFormPlane');
+
+        // Получите данные выбранного самолета и заполните поля формы редактирования
+        var selectedPlane = document.querySelector('input[name="selected_plane"]:checked');
+        var planeName = selectedPlane.parentNode.parentNode.cells[0].textContent;
+        var planeModel = selectedPlane.parentNode.parentNode.cells[1].textContent;
+        var planeAirline = selectedPlane.parentNode.parentNode.cells[2].textContent;
+        var planeEconomySeats = selectedPlane.parentNode.parentNode.cells[3].textContent;
+        var planeBusinessSeats = selectedPlane.parentNode.parentNode.cells[4].textContent;
+        var planeFirstClassSeats = selectedPlane.parentNode.parentNode.cells[5].textContent;
+        var planeComfortClassSeats = selectedPlane.parentNode.parentNode.cells[6].textContent;
+        var planeEconomyPrice = selectedPlane.parentNode.parentNode.cells[11].textContent;
+        var planeBusinessPrice = selectedPlane.parentNode.parentNode.cells[12].textContent;
+        var planeFirstPrice = selectedPlane.parentNode.parentNode.cells[13].textContent;
+        var planeComfortPrice = selectedPlane.parentNode.parentNode.cells[14].textContent;
+        var planeHasBaggage = selectedPlane.parentNode.parentNode.cells[15].textContent;
+
+
+
+        // Заполните поля формы данными выбранного самолета для редактирования
+        document.getElementById('edit_pname').value = planeName;
+        document.getElementById('edit_model').value = planeModel;
+        document.getElementById('edit_airline').value = planeAirline;
+        document.getElementById('edit_economy_seats').value = planeEconomySeats;
+        document.getElementById('edit_business_seats').value = planeBusinessSeats;
+        document.getElementById('edit_first_class_seats').value = planeFirstClassSeats;
+        document.getElementById('edit_comfort_class_seats').value = planeComfortClassSeats;
+        document.getElementById('edit_economy_price').value = planeEconomyPrice;
+        document.getElementById('edit_business_price').value = planeBusinessPrice;
+        document.getElementById('edit_first_price').value = planeFirstPrice;
+        document.getElementById('edit_comfort_price').value = planeComfortPrice;
+        document.getElementById('edit_has_baggage').value = planeHasBaggage;
+
+
+
+
+
+    } else {
+        alert('Выберите самолет для редактирования.');
+    }
+}
+
+    function deletePlane(selectedPlaneId) {
+        if (selectedPlaneId) {
+            var confirmDelete = confirm('Вы уверены, что хотите удалить выбранный самолет?');
+
+            if (confirmDelete) {
+                fetch(`/delete_plane/${selectedPlaneId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Самолет успешно удален!');
+                        window.location.reload();
+                    } else {
+                        alert('Ошибка при удалении самолета: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при отправке запроса:', error);
+                    alert('Ошибка при удалении самолета.');
+                });
+            }
+        } else {
+            alert('Выберите самолет для удаления.');
+        }
+    }
+
+    function showAddFormPlane() {
+        hideAllFormsPlane();
+        showFormPlane('addFormPlane');
+    }
+
+    function getSelectedPlaneId() {
+        var selectedPlaneRadios = document.querySelectorAll('input[name="selected_plane"]:checked');
+        if (selectedPlaneRadios.length > 0) {
+            return selectedPlaneRadios[0].value;
+        }
+        return null;
+    }
+
+
+</script>
+
+    <script>
+    function showFormFlight(formId) {
+        hideAllFormsFlight();
+        document.getElementById(formId).style.display = 'block';
+    }
+
+    function hideAllFormsFlight() {
+        document.getElementById('editFormFlight').style.display = 'none';
+        document.getElementById('addFormFlight').style.display = 'none';
+    }
+
+    function saveFlightChanges() {
+        var selectedFlightId = getSelectedFlightId();
+
+        if (selectedFlightId) {
+            var newDepartureDate = document.getElementById('edit_departure_date').value;
+            var newDepartureTime = document.getElementById('edit_departure_time').value;
+            var newArrivalDate = document.getElementById('edit_arrival_date').value;
+            var newArrivalTime = document.getElementById('edit_arrival_time').value;
+            var newFlightNumber = document.getElementById('edit_flight_number').value;
+            var newAirline = document.getElementById('edit_airline_f').value;
+            var newDepartureAirport = document.getElementById('edit_departure_airport').value;
+            var newArrivalAirport = document.getElementById('edit_arrival_airport').value;
+            var newPlane = document.getElementById('edit_plane').value;
+
+            var data = {
+                edit_departure_date: newDepartureDate,
+                edit_departure_time: newDepartureTime,
+                edit_arrival_date: newArrivalDate,
+                edit_arrival_time: newArrivalTime,
+                edit_flight_number: newFlightNumber,
+                edit_airline_f: newAirline,
+                edit_departure_airport: newDepartureAirport,
+                edit_arrival_airport: newArrivalAirport,
+                edit_plane: newPlane
+            };
+
+            // Отправка данных на сервер
+            fetch(`/update_flight/${selectedFlightId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Проверяем, является ли ответ JSON
+                var contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json();
+                } else {
+                    throw new TypeError("Response was not JSON");
+                }
+            })
+            .then(result => {
+                if (result.success) {
+                    alert('Изменения для рейса успешно сохранены!');
+                    window.location.reload();
+                } else {
+                   const errorMessage = result.error || 'Неизвестная ошибка';
+        alert(`Произошла ошибка при сохранении изменений для рейса: ${errorMessage}`);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при отправке запроса:', error);
+                alert('Произошла ошибка при сохранении изменений для рейса.');
+            });
+        } else {
+            alert('Выберите рейс для сохранения изменений.');
+        }
+    }
+
+    function saveNewFlight() {
+        var newFlightData = {
+            add_departure_date: document.getElementById('add_departure_date').value,
+            add_departure_time: document.getElementById('add_departure_time').value,
+            add_arrival_date: document.getElementById('add_arrival_date').value,
+            add_arrival_time: document.getElementById('add_arrival_time').value,
+            add_flight_number: document.getElementById('add_flight_number').value,
+            add_airline_f: document.getElementById('add_airline_f').value,
+            add_departure_airport: document.getElementById('add_departure_airport').value,
+            add_arrival_airport: document.getElementById('add_arrival_airport').value,
+            add_plane: document.getElementById('add_plane').value
+        };
+
+        // Отправка AJAX-запроса на сервер
+        fetch('/add_flight', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newFlightData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Новый рейс успешно добавлен!');
+                window.location.reload();
+            } else {
+                alert('Произошла ошибка при добавлении рейса: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке запроса:', error);
+            alert('Произошла ошибка при добавлении рейса.');
+        });
+    }
+
+   function editSelectedFlight() {
+    var selectedFlightId = getSelectedFlightId();
+    if (selectedFlightId) {
+        showFormFlight('editFormFlight');
+        var selectedFlight = document.querySelector('input[name="selected_flight"]:checked');
+
+        // Обратите внимание на порядок заполнения полей формы в соответствии с вашим HTML
+        var departureDate = selectedFlight.parentNode.parentNode.cells[1].textContent;
+        var departureTime = selectedFlight.parentNode.parentNode.cells[2].textContent;
+        var arrivalDate = selectedFlight.parentNode.parentNode.cells[3].textContent;
+        var arrivalTime = selectedFlight.parentNode.parentNode.cells[4].textContent;
+        var flightNumber = selectedFlight.parentNode.parentNode.cells[5].textContent;
+        var airline = selectedFlight.parentNode.parentNode.cells[6].textContent;
+        var departureAirport = selectedFlight.parentNode.parentNode.cells[7].textContent;
+        var arrivalAirport = selectedFlight.parentNode.parentNode.cells[8].textContent;
+        var plane = selectedFlight.parentNode.parentNode.cells[9].textContent;
+
+        // Заполните поля формы данными выбранного рейса для редактирования
+        document.getElementById('edit_departure_date').value = departureDate;
+        document.getElementById('edit_departure_time').value = departureTime;
+        document.getElementById('edit_arrival_date').value = arrivalDate;
+        document.getElementById('edit_arrival_time').value = arrivalTime;
+        document.getElementById('edit_flight_number').value = flightNumber;
+        document.getElementById('edit_airline_f').value = airline;
+        document.getElementById('edit_departure_airport').value = departureAirport;
+        document.getElementById('edit_arrival_airport').value = arrivalAirport;
+        document.getElementById('edit_plane').value = plane;
+    } else {
+        alert('Выберите рейс для редактирования.');
+    }
+}
+
+    function deleteFlight(selectedFlightId) {
+        if (selectedFlightId) {
+            var confirmDelete = confirm('Вы уверены, что хотите удалить выбранный рейс?');
+
+            if (confirmDelete) {
+                fetch(`/delete_flight/${selectedFlightId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Рейс успешно удален!');
+                        window.location.reload();
+                    } else {
+                        alert('Ошибка при удалении рейса: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при отправке запроса:', error);
+                    alert('Ошибка при удалении рейса.');
+                });
+            }
+        } else {
+            alert('Выберите рейс для удаления.');
+        }
+    }
+
+    function showAddFormFlight() {
+        hideAllFormsFlight();
+        showFormFlight('addFormFlight');
+    }
+
+    function getSelectedFlightId() {
+        var selectedFlightRadios = document.querySelectorAll('input[name="selected_flight"]:checked');
+        if (selectedFlightRadios.length > 0) {
+            return selectedFlightRadios[0].value;
+        }
+        return null;
+    }
+</script>
+
+
+
+    <script>
+        function redirectToExit() {
+            window.location.href = '/exit';
+        }
+     </script>
+
+    <script>
+        function redirectToAnalytics() {
+            window.location.href = '/analytics';
+        }
+     </script>
+
+
+</head>
+<body>
+
+<div style="background-color: SlateBlue; height: 37px; padding: 10px; text-align: right;">
+        <div style="display: flex; align-items: center;">
+            <img src="https://cdn-icons-png.flaticon.com/512/6557/6557822.png" alt="Логотип" style="width: 50px; height: 50px; margin-right: 10px;">
+            <p style="margin: 0; font-size: 24px; color: white; letter-spacing: 2px;">SkyGuest</p>
+            <div style="display: flex; justify-content: flex-end; flex-grow: 1; align-items: flex-start;">
+                <button onclick="redirectToAnalytics()" style="border: none; background: none; color: white;  font-size: 20px; margin-right: 10px;">Аналитика</button>
+
+                <button onclick="redirectToExit()" style="border: none; background: none; color: white; font-size: 20px;">Выход</button>
+            </div>
+        </div>
+    </div>
+
+
+
+      <div class="column" style=" display: flex; flex-direction: column; align-items: center;" >
+        <div class="feature-box" >
+            <h1>Список авиакомпаний</h1>
+
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Код</th>
+                            <th>Контактная информация</th>
+                            <th>Выбрать</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for airline in airlines %}
+                            <tr>
+                                <td>{{ airline.airline_name }}</td>
+                                <td>{{ airline.airline_code }}</td>
+                                <td>{{ airline.contact_info }}</td>
+                                <td><input type="radio" name="selected_airline" value="{{ airline.airline_id }}"></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+                    <div id="editForm" style="display: none;">
+                <h2>Форма редактирования</h2>
+                <label for="edit_name">Новое название:</label>
+                                <input type="text" id="edit_name" name="edit_name" placeholder="Введите новое название авиакомпании" required>
+                                <label for="edit_code">Новый код:</label>
+                                <input type="text" id="edit_code" name="edit_code" placeholder="Введите новый код авиакомпании" required>
+
+                                <label for="edit_contact">Новая контактная информация:</label>
+                                <input type="text" id="edit_contact" name="edit_contact" placeholder="Введите новую контакную информацию авиакомпании" required>
+                <button onclick="saveChanges()">Сохранить</button>
+            </div>
+
+            <div id="addForm" style="display: none;">
+                <h2>Форма добавления</h2>
+                <label for="add_name">Название:</label>
+                                <input type="text" id="add_name" name="add_name" placeholder="Введите название новой авиакомпании" required>
+
+                                <label for="add_code">Код:</label>
+                                <input type="text" id="add_code" name="add_code" placeholder="Введите код новой авиакомпании" required>
+
+                                <label for="add_contact">Контактная информация:</label>
+                                <input type="text" id="add_contact" name="add_contact" placeholder="Введите контакную информацию новой авиакомпании" required>
+
+                <button onclick="saveNew()">Сохранить</button>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <button onclick="editSelected()">Изменить</button>
+                <button onclick="deleteAirline(getSelectedAirlineId())">Удалить</button>
+                <button onclick="showAddForm()">Добавить</button>
+            </div>
+        </div>
+
+
+
+
+         <div class="feature-box" >
+                <h1>Список аэропортов</h1>
+
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Код</th>
+                                <th>Город</th>
+                                <th>Адрес</th>
+                                <th>Контактная информация</th>
+                                <th>Выбрать</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for airport in airports %}
+                                <tr>
+                                    <td>{{ airport.airport_name }}</td>
+                                    <td>{{ airport.airport_code }}</td>
+                                    <td>{{ airport.city }}</td>
+                                    <td>{{ airport.address }}</td>
+                                    <td>{{ airport.contact_info }}</td>
+                                    <td><input type="radio" name="selected_airport" value="{{ airport.airport_id }}"></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                        <div id="editFormAeroport" style="display: none;">
+                    <h2>Форма редактирования</h2>
+                    <label for="edit_apname">Новое название:</label>
+                    <input type="text" id="edit_apname" name="edit_apname" placeholder="Введите новое название аэропорта" required>
+                    <label for="edit_apcode">Новый код:</label>
+                    <input type="text" id="edit_apcode" name="edit_apcode" placeholder="Введите новый код аэропорта" required>
+                    <label for="edit_apcity">Новый город:</label>
+                    <input type="text" id="edit_apcity" name="edit_apcity" placeholder="Введите новый город аэропорта" required>
+                    <label for="edit_apaddress">Новый адрес:</label>
+                    <input type="text" id="edit_apaddress" name="edit_apaddress" placeholder="Введите новый адрес аэропорта" required>
+
+                    <label for="edit_apcontact">Новая контактная информация:</label>
+                    <input type="text" id="edit_apcontact" name="edit_apcontact" placeholder="Введите новую контакную информацию аэропорта" required>
+                    <button onclick="saveAirportChanges()">Сохранить</button>
+                </div>
+
+                <div id="addFormAeroport" style="display: none;">
+                    <h2>Форма добавления</h2>
+                    <label for="add_apname">Название:</label>
+                    <input type="text" id="add_apname" name="add_apname" placeholder="Введите название нового аэропорта" required>
+
+                    <label for="add_apcode">Код:</label>
+                    <input type="text" id="add_apcode" name="add_apcode" placeholder="Введите код нового аэропорта" required>
+
+                    <label for="add_apcity">Новый город:</label>
+                    <input type="text" id="add_apcity" name="add_apcity" placeholder="Введите город нового аэропорта" required>
+                    <label for="add_apaddress">Новый адрес:</label>
+                    <input type="text" id="add_apaddress" name="add_apaddress" placeholder="Введите адрес нового аэропорта" required>
+
+
+                    <label for="add_apcontact">Контактная информация:</label>
+                    <input type="text" id="add_apcontact" name="add_apcontact" placeholder="Введите контакную информацию нового аэропорта" required>
+
+                    <button onclick="saveNewAirport()">Сохранить</button>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <button onclick="editSelectedAirport()">Изменить</button>
+                    <button onclick="deleteAirport(getSelectedAirportId())">Удалить</button>
+                    <button onclick="showAddFormAirport()">Добавить</button>
+                </div>
+         </div>
+
+          <div class="feature-box" >
+                        <h1>Список самолетов</h1>
+                    <div class="table-container">
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>Название самолета</th>
+                                        <th>Модель самолета</th>
+                                        <th>Авиакомпания</th>
+                                        <th>Количество мест эконом класса</th>
+                                        <th>Количество мест бизнесс класса</th>
+                                        <th>Количество мест первого класса</th>
+                                        <th>Количество мест комфорт класса</th>
+                                        <th>Количество занятых мест эконом класса</th>
+                                        <th>Количество занятых мест бизнесс класса</th>
+                                        <th>Количество занятых мест первого класса</th>
+                                        <th>Количество занятых мест комфорт класса</th>
+                                        <th>Цена мест эконом класса</th>
+                                        <th>Цена мест бизнесс класса</th>
+                                        <th>Цена мест первого класса</th>
+                                        <th>Цена мест комфорт класса</th>
+                                        <th>Наличие багажа</th>
+
+                                        <th>Выбрать</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for plane in planes %}
+                                        <tr>
+                                            <td>{{ plane.plane_name }}</td>
+                                            <td>{{ plane.plane_model }}</td>
+                                            <td>{{ plane.airline_name }}</td>
+                                            <td>{{ plane.economy_seats }}</td>
+                                            <td>{{ plane.business_seats }}</td>
+                                            <td>{{ plane.first_class_seats }}</td>
+                                            <td>{{ plane.comfort_class_seats }}</td>
+                                            <td>{{ plane.economy_seats_occupied }}</td>
+                                            <td>{{ plane.business_seats_occupied }}</td>
+                                            <td>{{ plane.first_class_seats_occupied }}</td>
+                                            <td>{{ plane.comfort_class_seats_occupied }}</td>
+                                            <td>{{ plane.economy_price }}</td>
+                                            <td>{{ plane.businessprice }}</td>
+                                            <td>{{ plane.first_price }}</td>
+                                            <td>{{ plane.comfort_price }}</td>
+                                            <td>{{ plane.has_baggage }}</td>
+                                             <td><input type="radio" name="selected_plane" value="{{ plane.plane_id }}"></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+
+                                <div id="editFormPlane" style="display: none;">
+                                    <label for="edit_pname">Название:</label>
+                                    <input type="text" id="edit_pname" name="edit_pname" placeholder="Введите новое название самолета" required>
+                                    <label for="edit_model">Модель:</label>
+                                    <input type="text" id="edit_model" name="edit_model" placeholder="Введите новую модель самолета" required>
+                                    <label for="edit_airline">Авиакомпания:</label>
+                                    <input type="text" id="edit_airline" name="edit_airline" placeholder="Введите новое название авиакомпании" required>
+                                    <label for="edit_economy_seats">Количество мест эконом класса:</label>
+                                    <input type="number" id="edit_economy_seats" name="edit_economy_seats" required>
+                                    <label for="edit_business_seats">Количество мест бизнес класса:</label>
+                                    <input type="number" id="edit_business_seats" name="edit_business_seats" required>
+                                    <label for="edit_first_class_seats">Количество мест первого класса:</label>
+                                    <input type="number" id="edit_first_class_seats" name="edit_first_class_seats" required>
+                                    <label for="edit_comfort_class_seats">Количество мест комфорт класса:</label>
+                                    <input type="number" id="edit_comfort_class_seats" name="edit_comfort_class_seats" required>
+                                    <label for="edit_economy_price">Цена места эконом класса:</label>
+                                    <input type="number" id="edit_economy_price" name="edit_economy_price" required>
+                                    <label for="edit_business_price">Цена места бизнес класса:</label>
+                                    <input type="number" id="edit_business_price" name="edit_business_price" required>
+                                    <label for="edit_first_price">Цена места первого класса:</label>
+                                    <input type="number" id="edit_first_price" name="edit_first_price" required>
+                                    <label for="edit_comfort_price">Цена места комфорт класса:</label>
+                                    <input type="number" id="edit_comfort_price" name="edit_comfort_price" required>
+                                    <label for="edit_has_baggage">Наличие багажа:</label>
+                                    <input type="text" id="edit_has_baggage" name="edit_has_baggage" placeholder="Введите наличие багажа" required>
+
+                                    <button onclick="savePlaneChanges()">Сохранить</button>
+                                </div>
+
+                                <div id="addFormPlane" style="display: none;">
+                                    <h2>Форма добавления самолета</h2>
+                                    <label for="add_pname">Название:</label>
+                                    <input type="text" id="add_pname" name="add_pname" placeholder="Введите название нового самолета" required>
+                                    <label for="add_model">Модель:</label>
+                                    <input type="text" id="add_model" name="add_model" placeholder="Введите модель нового самолета" required>
+                                    <label for="add_airline">Авиакомпания:</label>
+                                    <input type="text" id="add_airline" name="add_airline" placeholder="Введите название авиакомпании" required>
+                                    <label for="add_economy_seats">Количество мест эконом класса:</label>
+                                    <input type="number" id="add_economy_seats" name="add_economy_seats" required>
+                                    <label for="add_business_seats">Количество мест бизнес класса:</label>
+                                    <input type="number" id="add_business_seats" name="add_business_seats" required>
+                                    <label for="add_first_class_seats">Количество мест первого класса:</label>
+                                    <input type="number" id="add_first_class_seats" name="add_first_class_seats" required>
+                                    <label for="add_comfort_class_seats">Количество мест комфорт класса:</label>
+                                    <input type="number" id="add_comfort_class_seats" name="add_comfort_class_seats" required>
+                                    <label for="add_economy_price">Цена места эконом класса:</label>
+                                    <input type="number" id="add_economy_price" name="add_economy_price" required>
+                                    <label for="add_business_price">Цена места бизнес класса:</label>
+                                    <input type="number" id="add_business_price" name="add_business_price" required>
+                                    <label for="add_first_price">Цена места первого класса:</label>
+                                    <input type="number" id="add_first_price" name="add_first_price" required>
+                                    <label for="add_comfort_price">Цена места комфорт класса:</label>
+                                    <input type="number" id="add_comfort_price" name="add_comfort_price" required>
+                                    <label for="add_has_baggage">Наличие багажа:</label>
+                                    <input type="text" id="add_has_baggage" name="add_has_baggage" placeholder="Введите наличие багажа" required>
+
+                                    <button onclick="saveNewPlane()">Сохранить</button>
+                                </div>
+
+                                <div style="margin-top: 10px;">
+                                    <button onclick="editSelectedPlane()">Изменить</button>
+                                    <button onclick="deletePlane(getSelectedPlaneId())">Удалить</button>
+                                    <button onclick="showAddFormPlane()">Добавить</button>
+                                </div>
+          </div>
+                      <div class="feature-box">
+                <h1>Список рейсов</h1>
+                <div class="table-container">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Номер рейса</th>
+                                <th>Дата вылета</th>
+                                <th>Время вылета</th>
+                                <th>Дата прилета</th>
+                                <th>Время прилета</th>
+                                <th>Номер рейса</th>
+                                <th>Авиакомпания</th>
+                                <th>Аэропорт вылета</th>
+                                <th>Аэропорт прилета</th>
+                                <th>Самолет</th>
+                                <th>Выбрать</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for flight in flights %}
+                                <tr>
+                                    <td>{{ flight.flight_id }}</td>
+                                    <td>{{ flight.departure_date }}</td>
+                                    <td>{{ flight.departure_time }}</td>
+                                    <td>{{ flight.arrival_date }}</td>
+                                    <td>{{ flight.arrival_time }}</td>
+                                    <td>{{ flight.flight_number }}</td>
+                                    <td>{{ flight.airline_name }}</td>
+                                    <td>{{ flight.departure_airport }}</td>
+                                    <td>{{ flight.arrival_airport }}</td>
+                                    <td>{{ flight.plane_name }}</td>
+                                    <td><input type="radio" name="selected_flight" value="{{ flight.flight_id }}"></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="editFormFlight" style="display: none;">
+                    <h2>Форма редактирования рейса</h2>
+                    <label for="edit_departure_date">Дата вылета:</label>
+                    <input type="date" id="edit_departure_date" name="edit_departure_date" required>
+
+                    <label for="edit_departure_time">Время вылета:</label>
+                    <input type="time" id="edit_departure_time" name="edit_departure_time" required>
+
+                    <label for="edit_arrival_date">Дата прилета:</label>
+                    <input type="date" id="edit_arrival_date" name="edit_arrival_date" required>
+
+                    <label for="edit_arrival_time">Время прилета:</label>
+                    <input type="time" id="edit_arrival_time" name="edit_arrival_time" required>
+
+                    <label for="edit_flight_number">Номер рейса:</label>
+                    <input type="text" id="edit_flight_number" name="edit_flight_number" placeholder="Введите новый номер рейса" required>
+
+                    <label for="edit_airline_f">Авиакомпания:</label>
+                    <input type="text" id="edit_airline_f" name="edit_airline_f" placeholder="Введите новое название авиакомпании" required>
+
+                    <label for="edit_departure_airport">Аэропорт вылета:</label>
+                    <input type="text" id="edit_departure_airport" name="edit_departure_airport" placeholder="Введите новое название аэропорта вылета" required>
+
+                    <label for="edit_arrival_airport">Аэропорт прилета:</label>
+                    <input type="text" id="edit_arrival_airport" name="edit_arrival_airport" placeholder="Введите новое название аэропорта прилета" required>
+
+                    <label for="edit_plane">Самолет:</label>
+                    <input type="text" id="edit_plane" name="edit_plane" placeholder="Введите новое название самолета" required>
+
+                    <button onclick="saveFlightChanges()">Сохранить</button>
+                </div>
+
+                <div id="addFormFlight" style="display: none;">
+                    <h2>Форма добавления нового рейса</h2>
+                    <label for="add_departure_date">Дата вылета:</label>
+                    <input type="date" id="add_departure_date" name="add_departure_date" required>
+
+                    <label for="add_departure_time">Время вылета:</label>
+                    <input type="time" id="add_departure_time" name="add_departure_time" required>
+
+                    <label for="add_arrival_date">Дата прилета:</label>
+                    <input type="date" id="add_arrival_date" name="add_arrival_date" required>
+
+                    <label for="add_arrival_time">Время прилета:</label>
+                    <input type="time" id="add_arrival_time" name="add_arrival_time" required>
+
+                    <label for="add_flight_number">Номер рейса:</label>
+                    <input type="text" id="add_flight_number" name="add_flight_number" placeholder="Введите номер рейса" required>
+
+                    <label for="add_airline_f">Авиакомпания:</label>
+                    <input type="text" id="add_airline_f" name="add_airline_f" placeholder="Введите название авиакомпании" required>
+
+
+                    <label for="add_departure_airport">Аэропорт вылета:</label>
+                    <input type="text" id="add_departure_airport" name="add_departure_airport" placeholder="Введите название аэропорта вылета" required>
+
+                    <label for="add_arrival_airport">Аэропорт прилета:</label>
+                    <input type="text" id="add_arrival_airport" name="add_arrival_airport" placeholder="Введите название аэропорта прилета" required>
+
+                    <label for="add_plane">Самолет:</label>
+                    <input type="text" id="add_plane" name="add_plane" placeholder="Введите название самолета" required>
+
+                    <button onclick="saveNewFlight()">Сохранить</button>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <button onclick="editSelectedFlight()">Изменить</button>
+                    <button onclick="deleteFlight(getSelectedFlightId())">Удалить</button>
+                    <button onclick="showAddFormFlight()">Добавить</button>
+                </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+</body>
+</html>

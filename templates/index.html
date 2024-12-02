@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7601/7601946.png" />
+    <title>SkyGuest</title>
+
+    <style>
+      .feature-box {
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .feature-box:hover {
+        transform: scale(1.05);
+      }
+    </style>
+
+    <script>
+    function redirectToRegistration() {
+        window.location.href = '/register';
+    }
+    </script>
+
+    <script>
+    function redirectToLogin() {
+        window.location.href = '/login';
+    }
+    </script>
+
+
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Arial Rounded MT Bold', sans-serif;">
+
+
+
+    <div style="background-color: SlateBlue; height: 37px; padding: 10px; text-align: right;">
+       <div style="display: flex; align-items: center;">
+            <img src="https://cdn-icons-png.flaticon.com/512/6557/6557822.png" alt="Логотип" style="width: 50px; height: 50px; margin-right: 10px;">
+            <p style="margin: 0; font-size: 24px; color: white; letter-spacing: 2px;">SkyGuest</p>
+            <div style="display: flex; justify-content: flex-end; flex-grow: 1; align-items: flex-start;">
+                <button onclick="redirectToLogin()" style="border: none; background: none; color: white;  font-size: 20px; margin-right: 10px;">Войти</button>
+                <button onclick="redirectToRegistration()" style="border: none; background: none; color: white; font-size: 20px;">Зарегистрироваться</button>
+            </div>
+       </div>
+    </div>
+
+<div style="background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center; height: calc(100vh - 50px); display: flex; justify-content: space-around; align-items: center;">
+
+
+
+<p style="position: absolute; top: 10%; left: 0; right: 0; text-align: center; font-size: 40px; color: Maroon;">Добро пожаловать в SkyGuest - найди свой путь в облаках вместе с нами!</p>
+
+       <div class="feature-box" style="width: 30%; padding: 20px; text-align: center; background-color: rgba(255, 255, 255, 0.7); border-radius: 15px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/10741/10741236.png" alt="Изображение" style="width: 30%; height:10%; border-radius: 10px;">
+            <p style="margin-top: 10px; font-size: 18px; color: Maroon;"> Мы не просто поиск, а ключ к вашим воздушным приключениям. Полетайте с нами и почувствуйте разницу в каждом в каждом мгновении!</p>
+        </div>
+
+        <div class="feature-box" style="width: 30%; padding: 20px; text-align: center; background-color: rgba(255, 255, 255, 0.7); border-radius: 15px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/5153/5153647.png" alt="Изображение" style="width: 30%; height:10%; border-radius: 10px;">
+            <p style="margin-top: 10px; font-size: 18px; color: Maroon;">Уникальные предложения, интуитивный поиск и надежность. С нами ваш следующий полет начинается с улыбки!</p>
+        </div>
+
+        <div class="feature-box" style="width: 30%; padding: 20px; text-align: center; background-color: rgba(255, 255, 255, 0.7); border-radius: 15px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/5333/5333676.png" alt="Изображение" style="width: 30%; height:10%; border-radius: 10px;">
+            <p style="margin-top: 10px; font-size: 18px; color: Maroon;">Найдите оптимальные цены, легко и быстро. Доверьтесь нам, чтобы сделать каждый полет беззаботным и приятным!</p>
+        </div>
+
+
+    </div>
+
+</body>
+
+
+
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7601/7601946.png" />
+    <title>Profile Settings</title>
+
+    <style>
+        h1,
+        label {
+            color: Maroon;
+        }
+
+        button {
+            background-color: SlateBlue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: DarkSlateBlue;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        #currentInfo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-box {
+            transition: transform 0.3s ease-in-out;
+            margin-left: 5%;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+             margin-bottom: 10px;
+        }
+
+
+        .feature-box:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-box button {
+            margin: 10px;
+        }
+
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button,
+        input[type="submit"] {
+            cursor: pointer;
+            background-color: SlateBlue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover,
+        input[type="submit"]:hover {
+            background-color: DarkSlateBlue;
+        }
+
+        .flash-messages {
+            margin-top: 20px;
+        }
+    </style>
+
+    <script>
+        function showForm(formId) {
+            hideAllForms();
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        function hideAllForms() {
+
+            document.getElementById('changeNameForm').style.display = 'none';
+            document.getElementById('changeEmailForm').style.display = 'none';
+            document.getElementById('changePasswordForm').style.display = 'none';
+            document.getElementById('changeKeywordForm').style.display = 'none';
+        }
+    </script>
+     <script>
+        function redirectToProfile() {
+            window.location.href = '/user_profile';
+        }
+     </script>
+
+     <script>
+        function redirectToExit() {
+            window.location.href = '/exit';
+        }
+     </script>
+
+    <script>
+           function validatePassword(input) {
+            const value = input.value;
+            const isValid = /^[A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]+$/.test(value);
+
+            if (!isValid) {
+                alert("Можно использовать латинские буквы, цифры и некоторые специальные символы");
+                input.value = value.replace(/[^A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]+/g, ''); // Удаляем все символы, не являющиеся латинскими буквами, цифрами и некоторыми специальными символами
+            }
+        }
+
+         function validateUsername(input) {
+            const value = input.value;
+            const isValid = /^[\wа-яА-ЯёЁ.]+$/.test(value);
+
+            if (!isValid) {
+                alert("Можно использовать буквы, цифры, точки, нижние подчеркивания и русские символы");
+                input.value = value.replace(/[^\wа-яА-ЯёЁ.]+/g, ''); // Удаляем все символы, не являющиеся буквами, цифрами, пробелами, точками, нижними подчеркиваниями и русскими символами
+            }
+        }
+    </script>
+
+</head>
+<body>
+
+
+<div style="background-color: SlateBlue; height: 37px; padding: 10px; text-align: right;">
+       <div style="display: flex; align-items: center;">
+            <img src="https://cdn-icons-png.flaticon.com/512/6557/6557822.png" alt="Логотип" style="width: 50px; height: 50px; margin-right: 10px;">
+            <p style="margin: 0; font-size: 24px; color: white; letter-spacing: 2px;">SkyGuest</p>
+            <div style="display: flex; justify-content: flex-end; flex-grow: 1; align-items: flex-start;">
+                <button onclick="redirectToProfile()" style="border: none; background: none; color: white;  font-size: 20px; margin-right: 10px;">Главная</button>
+                <button onclick="redirectToExit()" style="border: none; background: none; color: white; font-size: 20px;">Выход</button>
+            </div>
+       </div>
+</div>
+
+<div style="background-image: url('https://images.unsplash.com/photo-1514519334989-3d5c8b1a9f91?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: contain;background-position: center;  height: calc(120vh - 50px); display: flex; justify-content: space-around;  align-items: center">
+
+     <div class="feature-box" style="width: 100%; padding: 20px; text-align: center; background-color: rgba(255, 255, 255, 0.7); border-radius: 15px; margin-top: -75px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/2643/2643540.png" alt="Изображение" style="width: 30%; height:10%; border-radius: 10px;">
+                 <div id="currentInfo">
+                    <p style="color: Maroon;">Текущее имя: {{ user_profile_data.username }}</p>
+                    <p style="color: Maroon;">Текущий email: {{ user_profile_data.email }}</p>
+                 </div>
+
+                <button onclick="showForm('changeNameForm')">Изменить имя</button>
+
+              <div id="changeNameForm" style="display: none;">
+                    <form action="/change_name" method="POST">
+                        {{ form.hidden_tag() }}
+                        <label for="newName">Новое имя:</label>
+                        <input type="text" id="newName" name="new_name" placeholder="Введите новое имя" oninput="validateUsername(this)" required>
+                         <input type="submit" value="Сохранить">
+                     </form>
+              </div>
+
+
+
+
+                <button onclick="showForm('changeEmailForm')">Изменить email</button>
+
+                    <div id="changeEmailForm" style="display: none;">
+
+                        <form action="/change_email" method="POST">
+                        {{ form.hidden_tag() }}
+                        <label for="newEmail">Новый email:</label>
+                        <input type="email" id="newEmail" name="new_email" placeholder="Введите новый email" required>
+                        <input type="submit" value="Сохранить">
+                         </form>
+                    </div>
+
+
+
+
+
+
+                <button onclick="showForm('changePasswordForm')">Изменить пароль</button>
+
+                <div id="changePasswordForm" style="display: none;">
+                    <form action="/change_password" method="POST">
+                        {{ form.hidden_tag() }}
+                        <label for="currentPassword">Текущий пароль:</label>
+                        <input type="password" id="currentPassword" name="current_password" placeholder="Введите текущий пароль" oninput="validatePassword(this)" required>
+                        <label for="newPassword">Новый пароль:</label>
+                        <input type="password" id="newPassword" name="new_password" placeholder="Введите новый пароль" oninput="validatePassword(this)" required>
+                        <label for="confirmPassword">Подтвердите новый пароль:</label>
+                        <input type="password" id="confirmPassword" name="confirm_password" placeholder="Подтвердите новый пароль" oninput="validatePassword(this)" required>
+                        <input type="submit" value="Сохранить">
+                    </form>
+                 </div>
+
+
+
+
+                <button onclick="showForm('changeKeywordForm')">Изменить ключевое слово</button>
+                 <div id="changeKeywordForm" style="display: none;">
+                    <form action="/change_keyword" method="POST">
+                        {{ form.hidden_tag() }}
+                        <label for="currentKeyword">Текущее ключевое слово:</label>
+                        <input type="text" id="currentKeyword" name="current_keyword" placeholder="Введите текущее ключевое слово" oninput="validateUsername(this)" required>
+                        <label for="newKeyword">Новое ключевое слово:</label>
+                        <input type="text" id="newKeyword" name="new_keyword" placeholder="Введите новое ключевое слово" oninput="validateUsername(this)" required>
+                        <label for="confirmNewKeyword">Подтвердите новое ключевое слово:</label>
+                        <input type="text" id="confirmNewKeyword" name="confirm_new_keyword" placeholder="Подтвердите новое ключевое слово" oninput="validateUsername(this)" required>
+                        <input type="submit" value="Сохранить">
+                    </form>
+                 </div>
+
+
+    </div>
+</div>
+</body>
+</html>

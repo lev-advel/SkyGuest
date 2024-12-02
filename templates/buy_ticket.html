@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/7601/7601946.png" />
+
+    <title>Buy Ticket</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        label {
+            margin-top: 10px;
+            font-size: 16px;
+            color: Maroon;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Стили для кнопки отправки формы */
+        input[type="submit"] {
+            background-color: SlateBlue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: DarkSlateBlue;
+        }
+
+        .feature-box {
+            transition: transform 0.3s ease-in-out;
+            margin-left: 5%;
+            width: 400px;
+            box-sizing: border-box;
+            text-align: center;
+             margin-bottom: 10px;
+
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            margin-top: 40px;
+            margin: 10px;
+        }
+
+
+        .feature-box:hover {
+            transform: scale(1.05);
+        }
+
+        #passenger-form-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .payment-box {
+            width: 300px;
+            margin: 20px auto; /* Центрируем бокс по горизонтали с отступами сверху и снизу */
+            padding: 20px; /* Добавим внутренние отступы для контента */
+            background-color: rgba(255, 255, 255, 0.7); /* Прозрачный белый цвет фона */
+            border-radius: 15px;
+            text-align: center; /* Центрируем содержимое по центру бокса */
+            height: 380px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .payment-box:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+    <datalist id="nationalityList">
+    <option value="Австралия">
+    <option value="Австрия">
+    <option value="Азербайджан">
+    <option value="Албания">
+    <option value="Алжир">
+    <option value="Ангола">
+    <option value="Андорра">
+    <option value="Антигуа и Барбуда">
+    <option value="Аргентина">
+    <option value="Армения">
+    <option value="Афганистан">
+    <option value="Багамы">
+    <option value="Бангладеш">
+    <option value="Барбадос">
+    <option value="Бахрейн">
+    <option value="Беларусь">
+    <option value="Бельгия">
+    <option value="Белиз">
+    <option value="Бенин">
+    <option value="Болгария">
+    <option value="Боливия">
+    <option value="Босния и Герцеговина">
+    <option value="Ботсвана">
+    <option value="Бразилия">
+    <option value="Бруней">
+    <option value="Буркина-Фасо">
+    <option value="Бурунди">
+    <option value="Бутан">
+    <option value="Вануату">
+    <option value="Ватикан">
+    <option value="Великобритания">
+    <option value="Венгрия">
+    <option value="Венесуэла">
+    <option value="Вьетнам">
+    <option value="Габон">
+    <option value="Гаити">
+    <option value="Гайана">
+    <option value="Гамбия">
+    <option value="Гана">
+    <option value="Гватемала">
+    <option value="Гвинея">
+    <option value="Гвинея-Бисау">
+    <option value="Германия">
+    <option value="Гондурас">
+    <option value="Гренада">
+    <option value="Греция">
+    <option value="Грузия">
+    <option value="Дания">
+    <option value="Джибути">
+    <option value="Доминика">
+    <option value="Доминиканская Республика">
+    <option value="Египет">
+    <option value="Замбия">
+    <option value="Зимбабве">
+    <option value="Израиль">
+    <option value="Индия">
+    <option value="Индонезия">
+    <option value="Иордания">
+    <option value="Ирак">
+    <option value="Иран">
+    <option value="Ирландия">
+    <option value="Исландия">
+    <option value="Испания">
+    <option value="Италия">
+    <option value="Йемен">
+    <option value="Казахстан">
+    <option value="Камбоджа">
+    <option value="Камерун">
+    <option value="Канада">
+    <option value="Катар">
+    <option value="Кения">
+    <option value="Кипр">
+    <option value="Киргизия">
+    <option value="Кирибати">
+    <option value="Китай">
+    <option value="Колумбия">
+    <option value="Коморы">
+    <option value="Конго">
+    <option value="Косово">
+    <option value="Коста-Рика">
+    <option value="Кот-д'Ивуар">
+    <option value="Куба">
+    <option value="Кувейт">
+    <option value="Лаос">
+    <option value="Латвия">
+    <option value="Лесото">
+    <option value="Либерия">
+    <option value="Ливан">
+    <option value="Ливия">
+    <option value="Литва">
+    <option value="Лихтенштейн">
+    <option value="Люксембург">
+    <option value="Маврикий">
+    <option value="Мавритания">
+    <option value="Мадагаскар">
+    <option value="Македония">
+    <option value="Малави">
+    <option value="Малайзия">
+    <option value="Мали">
+    <option value="Мальдивы">
+    <option value="Мальта">
+    <option value="Марокко">
+    <option value="Маршалловы Острова">
+    <option value="Мексика">
+    <option value="Мозамбик">
+    <option value="Молдова">
+    <option value="Монако">
+    <option value="Монголия">
+    <option value="Мьянма">
+    <option value="Намибия">
+    <option value="Науру">
+    <option value="Непал">
+    <option value="Нигер">
+    <option value="Нигерия">
+    <option value="Нидерланды">
+    <option value="Никарагуа">
+    <option value="Новая Зеландия">
+    <option value="Норвегия">
+    <option value="ОАЭ">
+    <option value="Оман">
+    <option value="Пакистан">
+    <option value="Палау">
+    <option value="Панама">
+    <option value="Папуа — Новая Гвинея">
+    <option value="Парагвай">
+    <option value="Перу">
+    <option value="Польша">
+    <option value="Португалия">
+    <option value="Россия">
+    <option value="Руанда">
+    <option value="Румыния">
+    <option value="Сальвадор">
+    <option value="Самоа">
+    <option value="Сан-Марино">
+    <option value="Саудовская Аравия">
+    <option value="Свазиленд">
+    <option value="Северная Корея">
+    <option value="Северная Македония">
+    <option value="Сейшелы">
+    <option value="Сенегал">
+    <option value="Сент-Винсент и Гренадины">
+    <option value="Сент-Киттс и Невис">
+    <option value="Сент-Люсия">
+    <option value="Сербия">
+    <option value="Сингапур">
+    <option value="Сирия">
+    <option value="Словакия">
+    <option value="Словения">
+    <option value="США">
+    <option value="Сьерра-Леоне">
+    <option value="Таджикистан">
+    <option value="Таиланд">
+    <option value="Танзания">
+    <option value="Того">
+    <option value="Тонга">
+    <option value="Тринидад и Тобаго">
+    <option value="Тувалу">
+    <option value="Тунис">
+    <option value="Туркмения">
+    <option value="Турция">
+    <option value="Уганда">
+    <option value="Узбекистан">
+    <option value="Украина">
+    <option value="Уругвай">
+    <option value="Фиджи">
+    <option value="Филиппины">
+    <option value="Финляндия">
+    <option value="Франция">
+    <option value="Хорватия">
+    <option value="Центральноафриканская Республика">
+    <option value="Чад">
+    <option value="Черногория">
+    <option value="Чехия">
+    <option value="Чили">
+    <option value="Швейцария">
+    <option value="Швеция">
+    <option value="Шри-Ланка">
+    <option value="Эквадор">
+    <option value="Экваториальная Гвинея">
+    <option value="Эритрея">
+    <option value="Эсватини">
+    <option value="Эстония">
+    <option value="Эфиопия">
+    <option value="Южная Корея">
+    <option value="ЮАР">
+    <option value="Ямайка">
+    <option value="Япония">
+</datalist>
+
+    <script>
+
+        function formatPhoneNumber(input) {
+            // Remove all non-digit characters
+            let phoneNumber = input.value.replace(/\D/g, '');
+
+            // Check for the maximum length of the phone number
+            if (phoneNumber.length > 12) {
+                phoneNumber = phoneNumber.slice(0, 12);
+            }
+
+            // Format the phone number: +375(XX) XXX-XX-XX
+            let formattedPhoneNumber = '+';
+            formattedPhoneNumber += phoneNumber.slice(0, 3) + '(';
+            formattedPhoneNumber += phoneNumber.slice(3, 5) + ') ';
+            formattedPhoneNumber += phoneNumber.slice(5, 8) + '-';
+            formattedPhoneNumber += phoneNumber.slice(8, 10) + '-';
+            formattedPhoneNumber += phoneNumber.slice(10, 12);
+
+            // Place the formatted number back into the input field
+            input.value = formattedPhoneNumber;
+
+
+        }
+
+        // Функция для форматирования ввода даты действия карты
+        function formatCardExpiryDate(input) {
+            // Remove non-digit characters
+            let inputValue = input.value.replace(/\D/g, '');
+
+            // Check for the maximum length
+            if (inputValue.length > 4) {
+                inputValue = inputValue.slice(0, 4);
+            }
+
+            // Format the date: MM/YYYY
+            let formattedDate = inputValue.replace(/(\d{2})(\d{0,2})/, function (_, p1, p2) {
+                return p2.length > 0 ? p1 + '/' + p2 : p1;
+            });
+
+            // Place the formatted date back into the input field
+            input.value = formattedDate;
+        }
+
+        function validateCardExpiryDate(input) {
+            // Extract month and year
+            const inputValue = input.value.replace(/\D/g, '');
+            const month = inputValue.slice(0, 2);
+            const year = inputValue.slice(2);
+
+            // Проверка валидности месяца
+            if (month < 1 || month > 12) {
+                alert("Пожалуйста, введите корректный месяц (от 01 до 12).");
+                input.value = ''; // Очистка поля в случае ошибки
+                return;
+            }
+
+            // Get current date
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear() % 100; // Get last two digits of the year
+            const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed
+
+            // Check if the entered date is in the future or the current month
+            if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                alert("Пожалуйста, введите корректную дату действия карты.");
+                input.value = ''; // Очистка поля в случае ошибки
+            }
+        }
+
+         function formatCardNumber(input) {
+            // Remove non-digit characters
+            let cardNumber = input.value.replace(/\D/g, '');
+
+            // Check for the maximum length
+            if (cardNumber.length > 16) {
+                cardNumber = cardNumber.slice(0, 16);
+            }
+
+            // Format the card number: XXXX XXXX XXXX XXXX
+            let formattedCardNumber = '';
+            for (let i = 0; i < cardNumber.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedCardNumber += ' ';
+                }
+                formattedCardNumber += cardNumber[i];
+            }
+
+            // Place the formatted number back into the input field
+            input.value = formattedCardNumber;
+         }
+
+        function formatCVV(input) {
+            // Remove non-digit characters
+            let cvv = input.value.replace(/\D/g, '');
+
+             // Check for the maximum length
+             if (cvv.length > 3) {
+                cvv = cvv.slice(0, 3);
+             }
+
+            // Place the formatted CVV back into the input field
+            input.value = cvv;
+        }
+
+        function validateInput(input) {
+            const value = input.value;
+            const isValid = /^[A-Z]+$/.test(value);
+
+            if (!isValid) {
+                alert("Пожалуйста, вводите только заглавные латинские символы");
+                input.value = value.replace(/[^A-Z]+/g, ''); // Удаляем все символы, не являющиеся латинскими
+            }
+        }
+
+        function validateInput1(input) {
+            const value = input.value;
+
+            // Проверяем, содержит ли ввод только латинские символы и один пробел
+            const isValid = /^[A-Z ]+$/.test(value);
+
+            if (!isValid) {
+                alert("Пожалуйста, вводите только заглавные латинские символы и один пробел");
+                input.value = value.replace(/[^A-Z ]+/g, ''); // Удаляем все символы, не являющиеся латинскими и лишние пробелы
+            }
+        }
+
+        function validatePassportNumber(input) {
+            const regex = /^[A-Z0-9]*$/;
+            const value = input.value;
+
+            if (!regex.test(value)) {
+                alert("Пожалуйста, используйте только латинские символы и цифры.");
+                // Очистить неправильное значение (по желанию)
+                input.value = value.replace(/[^A-Z0-9]/g, '');
+            }
+        }
+
+        function validateDateInput(input) {
+            const value = input.value;
+            const isValid = /^[0-9-]+$/.test(value);
+
+            if (!isValid) {
+                alert("Пожалуйста, вводите только цифры и символ '-'");
+                input.value = value.replace(/[^0-9-]+/g, ''); // Удаляем все символы, не являющиеся цифрами и '-'
+            }
+        }
+
+        function getFlightIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('flightId') || ''; // Предполагается, что 'flightid' - это имя параметра в URL
+        }
+
+        function validateCVV(input) {
+            const regex = /^[0-9]*$/;
+            const value = input.value;
+
+            if (!regex.test(value)) {
+                alert("Пожалуйста, введите только цифры.");
+                // Очистить неправильное значение (по желанию)
+                input.value = value.replace(/\D/g, '');
+            }
+        }
+
+
+    </script>
+
+    <script>
+        // Получение параметров из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const adultCount = parseInt(urlParams.get('adult'), 10) || 0;
+        const childCount = parseInt(urlParams.get('child'), 10) || 0;
+        const infantCount = parseInt(urlParams.get('infant'), 10) || 0;
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const mainContainer = document.getElementById("main-container");
+            const passengerFormContainer = document.getElementById("passenger-form-container");
+
+
+
+            function recalculateMainContainerHeight() {
+                const passengerForms = document.querySelectorAll(".feature-box");
+                let totalHeight = 120;
+
+                passengerForms.forEach(form => {
+                    totalHeight += form.offsetHeight;
+                });
+
+                // Устанавливаем высоту mainContainer
+                mainContainer.style.height = `${totalHeight}px`;
+
+                // Устанавливаем высоту backgroundContainer
+                const backgroundContainer = document.getElementById("background-container");
+                backgroundContainer.style.height = `${totalHeight}px`;
+            }
+
+
+
+
+            // Создание форм для каждого пассажира
+            for (let i = 0; i < adultCount + childCount + infantCount; i++) {
+                const passengerForm = document.createElement("form");
+                passengerForm.action = " ";
+                passengerForm.method = "post";
+                passengerForm.className = "feature-box"; //  стили feature-box для форм пассажиров
+
+
+                passengerForm.innerHTML = `
+                    <h2 style="color: SlateBlue;">Информация о пассажире ${i + 1}</h2>
+                    <p style="color: darkred; font-size: 14px;">Примечание: Для указания информации о пассажирах используйте только латинские символы.</p>
+
+                    <input type="text" id="last_name_${i}" name="last_name_${i}" placeholder="Фамилия" required oninput="validateInput(this)">
+
+                    <input type="text" id="first_name_${i}" name="first_name_${i}" placeholder="Имя" required oninput="validateInput(this)">
+                    <input type="text" id="middle_name_${i}" name="middle_name_${i}" placeholder="Отчество" oninput="validateInput(this)">
+
+                    <label for="birthdate_${i}">Дата рождения:</label>
+                    <input type="date" id="birthdate_${i}" name="birthdate_${i}" placeholder="Дата рождения" required onchange="validateDateInput(this)" max="${new Date().toISOString().split('T')[0]}">
+
+                    <label for="sex_${i}">Пол:</label>
+                    <select id="sex_${i}" name="sex_${i}" required>
+                        <option value="male">Мужской</option>
+                        <option value="female">Женский</option>
+                    </select>
+
+                    <label for="nationality_${i}">Гражданство:</label>
+                    <input type="text" id="nationality_${i}" name="nationality_${i}" placeholder="Гражданство" required list="nationalityList">
+
+                    <label for="document_${i}">Тип документа:</label>
+                    <select id="document_${i}" name="document_${i}" required>
+                        <option value="National passport">Национальный паспорт</option>
+                        <option value="Certificate of birth">Свидетельство о рождении</option>
+                        <option value="International passport">Загран паспорт</option>
+                    </select>
+
+                    <input type="text" id="passport_number_${i}" name="passport_number_${i}" placeholder="Номер документа" required oninput="validatePassportNumber(this)" >
+                    <label for="expilation_date_${i}">Годен до:</label>
+                    <input type="date" id="expilation_date_${i}" name="expilation_date_${i}" placeholder="Годен до" required onchange="validateDateInput(this)" min="${new Date().toISOString().split('T')[0]}">
+
+                    <input
+                        type="tel"
+                        id="telephone_number_${i}"
+                        name="telephone_number_${i}"
+                        placeholder="Номер телефона"
+                        oninput="formatPhoneNumber(this)"
+                        required
+                    >
+
+                    <input type="email" id="email_${i}" name="email_${i}" placeholder="Email" required>
+                `;
+
+
+                passengerFormContainer.appendChild(passengerForm);
+
+                recalculateMainContainerHeight();
+            }
+
+            // Создание единственной формы оплаты
+            const paymentForm = document.createElement("form");
+            paymentForm.action = " ";
+            paymentForm.method = "post";
+            paymentForm.className = "payment-box";
+
+
+            paymentForm.innerHTML = `
+                <h2 style="color: SlateBlue;">Оплата</h2>
+
+                <input type="text" id="card_number" name="card_number" maxlength="19" placeholder="Номер карты" required oninput="formatCardNumber(this)">
+                <input type="text" id="cvv" name="cvv" maxlength="3" placeholder="CVV" required oninput="validateCVV(this)">
+                <input type="text" id="cardholder_name" name="cardholder_name" placeholder="Имя владельца карты" required oninput="validateInput1(this)">
+                <label for="expiry_date">Дата действия карты (MM/ГГ):</label>
+                <input type="text" id="expiry_date" name="expiry_date" maxlength="5" placeholder="ММ/ГГ" required oninput="formatCardExpiryDate(this)" onchange="validateCardExpiryDate(this)">
+            `;
+
+            // Добавление формы оплаты после форм для пассажиров
+            passengerFormContainer.appendChild(paymentForm);
+
+
+
+            // Добавление слушателя для кнопки "Сохранить"
+            mainContainer.innerHTML += '<input type="submit" id="saveButton" value="Оплатить" style="margin-top: 20px;"disabled>';
+
+            // Функция для проверки заполненности всех форм пассажиров и формы оплаты
+            function checkFormsCompletion() {
+                const allForms = document.querySelectorAll(".feature-box, .payment-box");
+                let allFormsFilled = true;
+
+                allForms.forEach(form => {
+                    const formFields = form.querySelectorAll("input[required], select[required]");
+
+                    formFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            allFormsFilled = false;
+                        }
+                    });
+                });
+
+                const saveButton = document.getElementById("saveButton");
+                if (saveButton) {
+                    saveButton.disabled = !allFormsFilled;
+                }
+            }
+
+            // Добавление слушателя для каждой формы пассажира и формы оплаты
+            const allForms = document.querySelectorAll(".feature-box, .payment-box");
+            allForms.forEach(form => {
+                form.addEventListener("input", checkFormsCompletion);
+            });
+
+            // Инициализация при загрузке страницы
+            checkFormsCompletion();
+
+            // Добавление слушателя для кнопки "Сохранить"
+            document.getElementById("saveButton").addEventListener("click", function (event) {
+                event.preventDefault(); // Предотвратить отправку формы по умолчанию
+
+                // Если кнопка не заблокирована (disabled), выполнить код
+                if (!this.disabled) {
+                    // Блокировка кнопки
+                    this.disabled = true;
+
+                    // Сбор данных из форм пассажиров
+                    const passengerData = {};
+                    const passengerForms = document.querySelectorAll(".feature-box");
+
+                    passengerForms.forEach((form, index) => {
+                        const formData = new FormData(form);
+                        passengerData[index] = Object.fromEntries(formData);
+                    });
+
+                    // Отправка данных на сервер с использованием AJAX
+                    fetch("/process_passenger_data", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ passenger_info: passengerData }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Если запрос успешен, выводим alert с сообщением
+                            alert("Данные успешно обработаны! Ваш билет доступен в корзине.");
+                        } else {
+                            // Если запрос неуспешен, выводим alert с сообщением об ошибке
+                            alert("Ошибка обработки данных!");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                } else {
+                    // Если кнопка заблокирована, выводим сообщение
+                    alert("Форму можно отправить только один раз.");
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+</head>
+
+
+<body>
+    <div style="background-color: SlateBlue; height: 37px; padding: 10px; text-align: right;">
+       <div style="display: flex; align-items: center;">
+            <img src="https://cdn-icons-png.flaticon.com/512/6557/6557822.png" alt="Логотип" style="width: 50px; height: 50px; margin-right: 10px;">
+            <p style="margin: 0; font-size: 24px; color: white; letter-spacing: 2px;">SkyGuest</p>
+           <div style="display: flex; justify-content: flex-end; flex-grow: 1; align-items: flex-start;">
+                <button onclick="redirectToProfile()" style="border: none; background: none; color: white;  font-size: 20px; margin-right: 10px;">Главная</button>
+            </div>
+
+       </div>
+</div>
+
+<div id="background-container" style="background-image: url('https://images.unsplash.com/photo-1514519334989-3d5c8b1a9f91?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center; height: 100%; display: flex; justify-content: space-around; align-items: flex-start;">
+     <div id="main-container">
+        <div style="background-color: rgba(123, 104, 238, 0.7); padding: 10px; text-align: right; border-radius: 10px;">
+             <div id="passenger-form-container"></div>
+        </div>
+
+     </div>
+</div>
+</body>
+<script> function redirectToProfile() {
+            window.location.href = '/user_profile';
+        }
+</script>
+</html>
